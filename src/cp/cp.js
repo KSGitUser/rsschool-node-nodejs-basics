@@ -1,4 +1,4 @@
-import { spawn } from "node:child_process";
+import { spawn, fork } from "node:child_process";
 import getDirname from "../utils/getDirname.js";
 import { join } from "node:path";
 
@@ -13,6 +13,9 @@ const spawnChildProcess = async (...args) => {
 
   process.stdin.pipe(childProcess.stdin);
   childProcess.stdout.pipe(process.stdout);
+
+  // или моно только этой строчкой вместо spawn
+  // const childProcess = fork(fullPathToChildProcess, [...args]);
 };
 
 spawnChildProcess();
