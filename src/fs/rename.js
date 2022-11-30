@@ -20,14 +20,23 @@ const rename = async () => {
     fileName + fileExtension
   );
 
-  if (existsSync(pathToRenamedFile)) {
-    throw new Error("FS operation failed");
-  }
+  const existsAsync = (pathToRenamedFile) => new Promise((resolve, reject) => {
+    if (existsSync(pathToRenamedFile)) {
+      const errorExist = { ...new Error("FS operation failed - exist"),
+        code: 'EEXIST'
+      }
+      reject(errorExist);
+    }
+    resolve(false);
+  })
+
+
 
   try {
+    await existsAsync(pathToRenamedFile);
     await renameFile(pathToOriginalFile, pathToRenamedFile);
   } catch (err) {
-    if ((err.code = "ENOENT")) {
+    if ((err.code === "ENOENT") || err.code === "EEXIST") {
       throw new Error("FS operation failed");
     }
     throw err;
