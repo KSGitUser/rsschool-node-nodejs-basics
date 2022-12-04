@@ -18,4 +18,4 @@ const spawnChildProcess = async (...args) => {
   // const childProcess = fork(fullPathToChildProcess, [...args]);
 };
 
-spawnChildProcess();
+spawnChildProcess('arg1', 'arg2', 'arg3');
